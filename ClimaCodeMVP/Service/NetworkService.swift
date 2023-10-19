@@ -45,32 +45,26 @@ final class NetworkService: NetworkServiceProtocol {
                 print("Error")
                 return
             }
-        }
+            do {
+                let decoder = JSONDecoder()
+                let task = try decoder.decode([WetherModel].self, from: data ?? Data())
+                print(completion(.success(task)))
+                completion(.success(task))
+            } catch {
+                completion(.failure(error))
+            }
+        }.resume()
     }
 }
 
-
 //MARK: - NetworkService
 extension NetworkService: WeatherManagerDelegate {
-    func didUpdateWether(model: WetherModel) {
-        
-    }
-    
-    func didFailWithError(error: Error) {
-        
-    }
+    func didUpdateWether(model: WetherModel) { }
+    func didFailWithError(error: Error) { }
 }
 
 //MARK: - FetchWeatherProtocol
 extension NetworkService: FetchWeatherProtocol {
-    func fetchWeather(cityName: String) {
-        
-    }
-    
-    func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
-        
-    }
-    
-    
+    func fetchWeather(cityName: String) { }
+    func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) { }
 }
-
